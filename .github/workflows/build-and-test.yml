@@ -10,16 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repository
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v4
         with:
           path: tosshin
 
-      - name: Add Debian repositories and rosdep sources list
-        run: |
-          sudo apt update && sudo apt install curl
-          curl -s http://repository.ichiro-its.org/debian/setup-nightly.bash | bash -s
-          curl -s http://repository.ichiro-its.org/debian/setup-threeal.bash | bash -s
-          curl -s http://repository.ichiro-its.org/rosdep/setup.bash | bash -s
+      - name: Checkout keisan dependency
+        uses: actions/checkout@v4
+        with:
+          repository: ichiro-its/keisan
+          ref: 593c9dce7acf322db4e13a3d15d628de3e7186be
+          path: keisan
 
       - name: Build and test workspace
         uses: ichiro-its/ros2-build-and-test-action@main
+        with:
+          distro: iron
